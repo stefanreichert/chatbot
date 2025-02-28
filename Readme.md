@@ -24,14 +24,7 @@ To pull the Mistral model, use the following command:
 docker exec -it ollama ollama pull mistral
 ```
 
-### Step 3: Run the Mistral Model
-To run the Mistral model, use the following command:
-
-```sh
-docker exec -it ollama ollama run mistral
-```
-
-### Step 4: Launch the Chatbot
+### Step 3: Launch the Chatbot
 To launch the chatbot, follow these steps:
 
 1. Navigate to the project directory.
@@ -49,13 +42,13 @@ To launch the chatbot, follow these steps:
 
 This will start the chatbot, and you can interact with it via the console. Type 'exit' to quit the application.
 
-### Step 5: Run the Chatbot in the IDE
+### Step 4: Run the Chatbot in the IDE
 To run the chatbot in IntelliJ IDEA, follow these steps:
 
 1. Open IntelliJ IDEA.
 2. Open the project by selecting `File > Open` and navigating to the project directory.
 3. Wait for IntelliJ IDEA to index the project and download dependencies.
-4. Navigate to the `src/main/java/net/wickedshell/ai/chatbot/OllamaChat.java` file.
-5. Right-click on the `OllamaChat` class and select `Run 'OllamaChat.main()'`.
+4. Navigate to the `src/main/java/net/wickedshell/ai/chatbot/basic/BasicConsoleChatBot.java` file.
+5. Right-click on the `BasicConsoleChatBot` class and select `Run 'BasicConsoleChatBot.main()'`.
 
 This will start the chatbot, and you can interact with it via the console in the IDE. Type 'exit' to quit the application.

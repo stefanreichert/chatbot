@@ -18,12 +18,37 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j</artifactId>
-            <version>0.28.0</version>
+            <version>1.0.0-beta1</version>
         </dependency>
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-ollama</artifactId>
-            <version>0.28.0</version>
+            <version>1.0.0-beta1</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-qdrant</artifactId>
+            <version>1.0.0-beta1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <version>1.69.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.metaloom.qdrant</groupId>
+            <artifactId>qdrant-java-grpc-client</artifactId>
+            <version>0.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>org.eclipse.jdt.core</artifactId>
+            <version>3.23.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
