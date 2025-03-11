@@ -27,10 +27,10 @@ public class QdrantStorageJavaInitializer {
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        new QdrantStorageJavaInitializer(Path.of("<path-to-root-folder>")).initializeWith();
+        new QdrantStorageJavaInitializer(Path.of("<path-to-root-folder>")).initialize();
     }
 
-    private void initializeWith() throws InterruptedException, ExecutionException {
+    private void initialize() throws InterruptedException, ExecutionException {
         repository.reset();
         List<SourceFileAbstraction> sourceFiles = ASTExtractor.parseFolder(sourceFolder.toString());
         for (SourceFileAbstraction sourceFile : sourceFiles) {

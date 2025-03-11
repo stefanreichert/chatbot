@@ -35,19 +35,18 @@ public class MarkdownASTConsoleChatBot extends ConsoleChatBot {
         StringBuilder contextBuilder = new StringBuilder();
         for (EmbeddingMatch<TextSegment> match : results) {
             Metadata metadata = match.embedded().metadata();
-            contextBuilder.append("Code: ").append(metadata.getString(QdrantStorageMarkdownInitializer.KEY_CONTENT)).append("\n\n");
-            out.println("...consider section " + metadata.getString(QdrantStorageMarkdownInitializer.KEY_HEADING) + " in  file: " + metadata.getString(QdrantStorageMarkdownInitializer.KEY_PATH) + " | Score: " + match.score());
+            contextBuilder.append(metadata.getString(QdrantStorageMarkdownInitializer.KEY_CONTENT)).append("\n\n");
+            out.println("...considered section " + metadata.getString(QdrantStorageMarkdownInitializer.KEY_HEADING) + " in  file: " + metadata.getString(QdrantStorageMarkdownInitializer.KEY_PATH) + " | Score: " + match.score());
         }
-        String context = contextBuilder.toString();
-
 
         String prompt = """
                 %s
-                You are a senior Software Architect that is responsible and accountable for the architecture of a system.
+                You are a senior Software Architect that is responsible and accountable for the architecture development, decisions and design of a system.
                 Don't make up any facts, refer the Software Architecture Document content given below only. Be precise and concise.
+                If you don't know the answer say so and ask questions to get necessary information.
                 
                 %s
-                """.formatted(context, input);
+                """.formatted(contextBuilder.toString(), input);
 
         return chatBot.chat(prompt);
     }

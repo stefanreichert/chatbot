@@ -29,7 +29,7 @@ docker exec -it ollama ollama pull codellama
 To set up qdrant please use either the `QdrantStorageMarkdownInitializer` for indexing a markdown file or the `QdrantStorageJavaInitializer` for indexing a Java code base.
 In both cases you need to edit the class file by setting the fully qualified path to the respective folder and execute the main method.
 
-### Step 4: Launch the Chatbot
+### Step 4a: Launch the Chatbot (Basic ChatBot only)
 To launch the chatbot, follow these steps:
 
 1. Navigate to the project directory.
@@ -47,7 +47,7 @@ To launch the chatbot, follow these steps:
 
 This will start the chatbot, and you can interact with it via the console. Type 'exit' to quit the application.
 
-### Step 5: Run the Chatbot in the IDE
+### Step 4b: Run the Chatbot in the IDE (Basic and RAG/AST cases)
 To run the chatbot in IntelliJ IDEA, follow these steps:
 
 1. Open IntelliJ IDEA.

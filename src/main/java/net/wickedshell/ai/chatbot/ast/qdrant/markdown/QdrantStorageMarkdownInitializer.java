@@ -6,7 +6,6 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import net.wickedshell.ai.chatbot.ast.qdrant.QdrantEmbeddingRepository;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.wickedshell.ai.chatbot.core.Constants.*;
@@ -37,36 +35,43 @@ public class QdrantStorageMarkdownInitializer {
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
-        new QdrantStorageMarkdownInitializer(Path.of("<path-to-root-folder>")).initializeWith();
+        new QdrantStorageMarkdownInitializer(Path.of("<path-to-root-folder>")).initialize();
     }
 
-    private void initializeWith() throws IOException, InterruptedException, ExecutionException {
-        List<Path> sourceFiles = findMarkdownFiles(sourceFolder);
-        Parser parser = Parser.builder().build();
+    private void initialize() throws IOException, InterruptedException, ExecutionException {
         repository.reset();
-        for (Path markdownFile : sourceFiles) {
-            LOG.info("Processing: {}...", markdownFile.toAbsolutePath());
+        findMarkdownFiles(sourceFolder).forEach(this::addMarkdownSectionsFor);
+    }
+
+    private void addMarkdownSectionsFor(Path markdownFile) {
+        LOG.info("Processing File: {}...", markdownFile.toAbsolutePath());
+        try {
+            Parser parser = Parser.builder().build();
             Document markdownDocument = parser.parse(Files.readString(markdownFile));
-            List<Heading> headings = getHeadingsRecursively(markdownDocument);
-            for (Heading heading : headings) {
-                LOG.info("Add Section: {}...", heading.getChars());
-                List<Paragraph> paragraphs = getParagraphs(heading);
-                String content = toString(heading, paragraphs);
-                Map<String, String> metadata = Map.of(
-                        KEY_PATH, markdownFile.toString(),
-                        KEY_HEADING, heading.getChars().toString(),
-                        KEY_CONTENT, content);
-                repository.add(content, metadata);
-            }
-            LOG.error("done");
+            getHeadingsRecursively(markdownDocument).forEach(heading -> addSection(heading, markdownFile));
+            LOG.error("Done");
+        } catch (IOException exception) {
+            LOG.error("Error reading file: {}", markdownFile);
+            throw new RuntimeException(exception);
         }
+    }
+
+    private void addSection(Heading heading, Path markdownFile) {
+        LOG.info("Add Section: {}...", heading.getChars());
+        List<Paragraph> paragraphs = getParagraphs(heading);
+        String content = toString(heading, paragraphs);
+        Map<String, String> metadata = Map.of(
+                KEY_PATH, markdownFile.toString(),
+                KEY_HEADING, heading.getChars().toString(),
+                KEY_CONTENT, content);
+        repository.add(content, metadata);
     }
 
     private String toString(Heading heading, List<Paragraph> paragraphs) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(heading.getChars().toString()).append("\n");
+        stringBuilder.append(heading.getChars()).append("\n");
         for (Paragraph paragraph : paragraphs) {
-            stringBuilder.append(paragraph.getChars().toString()).append("\n");
+            stringBuilder.append(paragraph.getChars()).append("\n");
         }
         return stringBuilder.toString();
     }
@@ -95,14 +100,10 @@ public class QdrantStorageMarkdownInitializer {
         if (node instanceof Paragraph paragraph) {
             paragraphNodes.add(paragraph);
         }
-        if(node != null && !(node.getNext() instanceof Heading)) {
+        if (node != null && !(node.getNext() instanceof Heading)) {
             paragraphNodes.addAll(getParagraphsRecursively(node.getNext()));
         }
         return paragraphNodes;
-    }
-
-    private @NotNull String getFileContent(Path markdownFile) {
-        return null;
     }
 
     private List<Path> findMarkdownFiles(Path sourceFolder) throws IOException {
@@ -111,7 +112,7 @@ public class QdrantStorageMarkdownInitializer {
             return paths
                     .filter(Files::isRegularFile)
                     .filter(path -> path.toString().endsWith(".md"))
-                    .collect(Collectors.toList());
+                    .toList();
         }
     }
 
