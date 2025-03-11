@@ -1,4 +1,4 @@
-package net.wickedshell.ai.chatbot.ast.parser;
+package net.wickedshell.ai.chatbot.ast.parser.java;
 
 import org.eclipse.jdt.core.dom.*;
 

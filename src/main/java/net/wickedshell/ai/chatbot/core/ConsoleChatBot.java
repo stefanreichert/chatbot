@@ -19,15 +19,18 @@ public abstract class ConsoleChatBot {
     private static final String PREFIX_ERROR = "Error: ";
 
     private final StreamingChatBot chatBot;
+    private final String modelName;
     private ChatMemory chatMemory;
 
     protected ConsoleChatBot(String modelName) {
+        this.modelName = modelName;
         this.chatBot = AiServices.builder(StreamingChatBot.class)
                 .streamingChatLanguageModel(ChatModelFactory.create(modelName))
                 .build();
     }
 
     protected ConsoleChatBot(String modelName, ChatMemory chatMemory) {
+        this.modelName = modelName;
         this.chatBot = AiServices.builder(StreamingChatBot.class)
                 .streamingChatLanguageModel(ChatModelFactory.create(modelName))
                 .chatMemory(chatMemory)
@@ -61,6 +64,10 @@ public abstract class ConsoleChatBot {
 
     private boolean hasMemoryWindow() {
         return chatMemory != null;
+    }
+
+    protected String getModelName() {
+        return modelName;
     }
 
     protected abstract TokenStream chat(StreamingChatBot chatBot, String input);

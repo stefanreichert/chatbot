@@ -15,6 +15,8 @@
     </properties>
 
     <dependencies>
+
+        <!-- Langchain4j LLM -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j</artifactId>
@@ -26,20 +28,24 @@
             <version>1.0.0-beta1</version>
         </dependency>
         <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-qdrant</artifactId>
-            <version>1.0.0-beta1</version>
-        </dependency>
-        <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty</artifactId>
             <version>1.69.0</version>
+        </dependency>
+
+        <!-- Qdrant -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-qdrant</artifactId>
+            <version>1.0.0-beta1</version>
         </dependency>
         <dependency>
             <groupId>io.metaloom.qdrant</groupId>
             <artifactId>qdrant-java-grpc-client</artifactId>
             <version>0.13.0</version>
         </dependency>
+
+        <!-- Java Parser -->
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
@@ -50,6 +56,15 @@
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
+
+        <!-- Markdown Parser -->
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>0.64.8</version>
+        </dependency>
+
+        <!-- Foundation -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

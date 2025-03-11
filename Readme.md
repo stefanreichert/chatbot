@@ -11,20 +11,25 @@ This project is an AI-powered chatbot that uses the `langchain4j` library to int
 - Maven
 
 ### Step 1: Launch Docker Compose
-To start the Ollama service using Docker Compose, navigate to the project directory and run the following command:
+To start the Ollama and qdrant service using Docker Compose, navigate to the project directory and run the following command:
 
 ```sh
-docker-compose up -d
+docker compose up -d
 ```
 
-### Step 2: Pull the Mistral Model
-To pull the Mistral model, use the following command:
+### Step 2: Pull the LLMs
+To pull the _mistral_ and _codellama_ model, use the following command:
 
 ```sh
 docker exec -it ollama ollama pull mistral
+docker exec -it ollama ollama pull codellama
 ```
 
-### Step 3: Launch the Chatbot
+### Step 3: Initialize Qdrant (required for RAG/AST cases only)
+To set up qdrant please use either the `QdrantStorageMarkdownInitializer` for indexing a markdown file or the `QdrantStorageJavaInitializer` for indexing a Java code base.
+In both cases you need to edit the class file by setting the fully qualified path to the respective folder and execute the main method.
+
+### Step 4: Launch the Chatbot
 To launch the chatbot, follow these steps:
 
 1. Navigate to the project directory.
@@ -42,13 +47,13 @@ To launch the chatbot, follow these steps:
 
 This will start the chatbot, and you can interact with it via the console. Type 'exit' to quit the application.
 
-### Step 4: Run the Chatbot in the IDE
+### Step 5: Run the Chatbot in the IDE
 To run the chatbot in IntelliJ IDEA, follow these steps:
 
 1. Open IntelliJ IDEA.
 2. Open the project by selecting `File > Open` and navigating to the project directory.
 3. Wait for IntelliJ IDEA to index the project and download dependencies.
-4. Navigate to the `src/main/java/net/wickedshell/ai/chatbot/basic/BasicConsoleChatBot.java` file.
-5. Right-click on the `BasicConsoleChatBot` class and select `Run 'BasicConsoleChatBot.main()'`.
+4. Navigate to the `*ChatBot` file.
+5. Run its main method.
 
 This will start the chatbot, and you can interact with it via the console in the IDE. Type 'exit' to quit the application.
