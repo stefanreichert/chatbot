@@ -27,7 +27,7 @@ public class QdrantEmbeddingRepository {
         embeddingStore = QdrantEmbeddingStore.builder()
                 .host(QDRANT_HOST)
                 .port(QDRANT_PORT)
-                .collectionName(llmProfile.getCollectionName())
+                .collectionName(llmProfile.getEmbeddingCollectionName())
                 .build();
     }
 
@@ -46,7 +46,7 @@ public class QdrantEmbeddingRepository {
     }
 
     public void reset() throws ExecutionException, InterruptedException {
-        Collections.DeleteCollection deleteEmbeddings = Collections.DeleteCollection.newBuilder().setCollectionName(llmProfile.getCollectionName()).build();
+        Collections.DeleteCollection deleteEmbeddings = Collections.DeleteCollection.newBuilder().setCollectionName(llmProfile.getEmbeddingCollectionName()).build();
         Collections.VectorParams vectorParams = Collections.VectorParams.newBuilder()
                 .setDistance(Collections.Distance.Cosine)
                 .setSize(llmProfile.getVectorSize())
@@ -55,7 +55,7 @@ public class QdrantEmbeddingRepository {
                 .setParams(vectorParams)
                 .build();
         Collections.CreateCollection createEmbeddings = Collections.CreateCollection.newBuilder()
-                .setCollectionName(llmProfile.getCollectionName())
+                .setCollectionName(llmProfile.getEmbeddingCollectionName())
                 .setVectorsConfig(vectorConfig).build();
         try (QdrantGrpcClient grpcClient = QdrantGrpcClient
                 .newBuilder(QDRANT_HOST, QDRANT_PORT, false)

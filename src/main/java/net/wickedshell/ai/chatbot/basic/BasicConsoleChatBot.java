@@ -7,13 +7,13 @@ import dev.langchain4j.store.memory.chat.InMemoryChatMemoryStore;
 import net.wickedshell.ai.chatbot.core.ConsoleChatBot;
 import net.wickedshell.ai.chatbot.core.StreamingChatBot;
 
-import static net.wickedshell.ai.chatbot.core.ConnectionProperties.MISTRAL_MODEL;
+import static net.wickedshell.ai.chatbot.core.LLMProfile.MISTRAL;
 
 public class BasicConsoleChatBot extends ConsoleChatBot {
     private static final int MESSAGE_WINDOW = 20;
 
     public BasicConsoleChatBot(ChatMemory chatMemory) {
-        super(MISTRAL_MODEL, chatMemory);
+        super(chatMemory, MISTRAL);
     }
 
     public static void main(String[] args) {
