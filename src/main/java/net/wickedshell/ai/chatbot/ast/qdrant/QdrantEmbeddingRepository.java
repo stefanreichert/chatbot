@@ -8,35 +8,32 @@ import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
 import dev.langchain4j.store.embedding.qdrant.QdrantEmbeddingStore;
 import io.qdrant.client.QdrantGrpcClient;
 import io.qdrant.client.grpc.Collections;
+import net.wickedshell.ai.chatbot.core.LLMProfile;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static net.wickedshell.ai.chatbot.ast.embeddings.EmbeddingFactory.createEmbeddingFor;
-import static net.wickedshell.ai.chatbot.core.Constants.*;
+import static net.wickedshell.ai.chatbot.core.ConnectionProperties.*;
 
 public class QdrantEmbeddingRepository {
 
-    private final String embeddingsCollectionName;
-    private final String modelName;
     private final QdrantEmbeddingStore embeddingStore;
-    private final int vectorSize;
+    private final LLMProfile llmProfile;
 
-    public QdrantEmbeddingRepository(String modelName, String embeddingsCollectionName, int vectorSize) {
-        this.modelName = modelName;
-        this.embeddingsCollectionName = embeddingsCollectionName;
+    public QdrantEmbeddingRepository(LLMProfile llmProfile) {
+        this.llmProfile = llmProfile;
         embeddingStore = QdrantEmbeddingStore.builder()
                 .host(QDRANT_HOST)
                 .port(QDRANT_PORT)
-                .collectionName(embeddingsCollectionName)
+                .collectionName(llmProfile.getCollectionName())
                 .build();
-        this.vectorSize = vectorSize;
     }
 
     public List<EmbeddingMatch<TextSegment>> searchSimilar(String query, int maxResultCount) {
         EmbeddingSearchRequest request = EmbeddingSearchRequest.builder()
-                .queryEmbedding(createEmbeddingFor(query, modelName))
+                .queryEmbedding(createEmbeddingFor(query, llmProfile.getModelName()))
                 .maxResults(maxResultCount)
                 .minScore(0.5)
                 .build();
@@ -44,21 +41,21 @@ public class QdrantEmbeddingRepository {
     }
 
     public void add(String text, Map<String, String> metadata) {
-        List<Float> vector = createEmbeddingFor(text, modelName).vectorAsList();
+        List<Float> vector = createEmbeddingFor(text, llmProfile.getModelName()).vectorAsList();
         embeddingStore.add(Embedding.from(vector), TextSegment.textSegment(text, Metadata.from(metadata)));
     }
 
     public void reset() throws ExecutionException, InterruptedException {
-        Collections.DeleteCollection deleteEmbeddings = Collections.DeleteCollection.newBuilder().setCollectionName(embeddingsCollectionName).build();
+        Collections.DeleteCollection deleteEmbeddings = Collections.DeleteCollection.newBuilder().setCollectionName(llmProfile.getCollectionName()).build();
         Collections.VectorParams vectorParams = Collections.VectorParams.newBuilder()
                 .setDistance(Collections.Distance.Cosine)
-                .setSize(vectorSize)
+                .setSize(llmProfile.getVectorSize())
                 .build();
         Collections.VectorsConfig vectorConfig = Collections.VectorsConfig.newBuilder()
                 .setParams(vectorParams)
                 .build();
         Collections.CreateCollection createEmbeddings = Collections.CreateCollection.newBuilder()
-                .setCollectionName(embeddingsCollectionName)
+                .setCollectionName(llmProfile.getCollectionName())
                 .setVectorsConfig(vectorConfig).build();
         try (QdrantGrpcClient grpcClient = QdrantGrpcClient
                 .newBuilder(QDRANT_HOST, QDRANT_PORT, false)

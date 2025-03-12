@@ -5,7 +5,7 @@ import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 
 import java.time.Duration;
 
-import static net.wickedshell.ai.chatbot.core.Constants.*;
+import static net.wickedshell.ai.chatbot.core.ConnectionProperties.*;
 
 public class ChatModelFactory {
 

@@ -12,15 +12,15 @@ import net.wickedshell.ai.chatbot.core.StreamingChatBot;
 import java.util.List;
 
 import static java.lang.System.out;
-import static net.wickedshell.ai.chatbot.core.Constants.*;
+import static net.wickedshell.ai.chatbot.core.LLMProfile.CODELLAMA;
 
 public class JavaASTConsoleChatBot extends ConsoleChatBot {
 
     private final QdrantEmbeddingRepository repository;
 
     protected JavaASTConsoleChatBot() {
-        super(CODELLAMA_MODEL);
-        this.repository = new QdrantEmbeddingRepository(getModelName(), EMBEDDINGS_COLLECTION_NAME_JAVA, VECTOR_SIZE_OLLAMA);
+        super(CODELLAMA);
+        this.repository = new QdrantEmbeddingRepository(this.llmProfile);
     }
 
     public static void main(String[] args) {

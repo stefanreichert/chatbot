@@ -6,6 +6,7 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import net.wickedshell.ai.chatbot.ast.qdrant.QdrantEmbeddingRepository;
+import net.wickedshell.ai.chatbot.core.LLMProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +19,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
-import static net.wickedshell.ai.chatbot.core.Constants.*;
-
 public class QdrantStorageMarkdownInitializer {
 
     public static final String KEY_PATH = "path";
@@ -31,7 +30,7 @@ public class QdrantStorageMarkdownInitializer {
 
     public QdrantStorageMarkdownInitializer(Path sourceFolder) {
         this.sourceFolder = sourceFolder;
-        repository = new QdrantEmbeddingRepository(MISTRAL_MODEL, EMBEDDINGS_COLLECTION_NAME_MARKDOWN, VECTOR_SIZE_MISTRAL);
+        repository = new QdrantEmbeddingRepository(LLMProfile.MISTRAL);
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {

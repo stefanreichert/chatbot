@@ -8,6 +8,7 @@ import dev.langchain4j.service.TokenStream;
 import java.util.Scanner;
 
 import static java.lang.System.*;
+import static net.wickedshell.ai.chatbot.core.ChatModelFactory.create;
 
 public abstract class ConsoleChatBot {
 
@@ -19,20 +20,21 @@ public abstract class ConsoleChatBot {
     private static final String PREFIX_ERROR = "Error: ";
 
     private final StreamingChatBot chatBot;
-    private final String modelName;
+    protected final LLMProfile llmProfile;
     private ChatMemory chatMemory;
 
-    protected ConsoleChatBot(String modelName) {
-        this.modelName = modelName;
+    protected ConsoleChatBot(LLMProfile llmProfile) {
+        this.llmProfile = llmProfile;
         this.chatBot = AiServices.builder(StreamingChatBot.class)
-                .streamingChatLanguageModel(ChatModelFactory.create(modelName))
+                .streamingChatLanguageModel(create(llmProfile.getModelName()))
                 .build();
     }
 
-    protected ConsoleChatBot(String modelName, ChatMemory chatMemory) {
-        this.modelName = modelName;
+    protected ConsoleChatBot(ChatMemory chatMemory, LLMProfile llmProfile) {
+        this.llmProfile = llmProfile;
+        this.chatMemory = chatMemory;
         this.chatBot = AiServices.builder(StreamingChatBot.class)
-                .streamingChatLanguageModel(ChatModelFactory.create(modelName))
+                .streamingChatLanguageModel(create(llmProfile.getModelName()))
                 .chatMemory(chatMemory)
                 .build();
     }
@@ -64,10 +66,6 @@ public abstract class ConsoleChatBot {
 
     private boolean hasMemoryWindow() {
         return chatMemory != null;
-    }
-
-    protected String getModelName() {
-        return modelName;
     }
 
     protected abstract TokenStream chat(StreamingChatBot chatBot, String input);

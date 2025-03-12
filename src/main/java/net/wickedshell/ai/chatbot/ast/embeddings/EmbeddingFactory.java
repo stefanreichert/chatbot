@@ -6,8 +6,8 @@ import org.jspecify.annotations.NonNull;
 
 import java.time.Duration;
 
-import static net.wickedshell.ai.chatbot.core.Constants.OLLAMA_URL;
-import static net.wickedshell.ai.chatbot.core.Constants.TIMEOUT_SECONDS;
+import static net.wickedshell.ai.chatbot.core.ConnectionProperties.OLLAMA_URL;
+import static net.wickedshell.ai.chatbot.core.ConnectionProperties.TIMEOUT_SECONDS;
 
 public class EmbeddingFactory {
     private EmbeddingFactory() {

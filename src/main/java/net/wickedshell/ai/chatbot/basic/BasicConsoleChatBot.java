@@ -7,7 +7,7 @@ import dev.langchain4j.store.memory.chat.InMemoryChatMemoryStore;
 import net.wickedshell.ai.chatbot.core.ConsoleChatBot;
 import net.wickedshell.ai.chatbot.core.StreamingChatBot;
 
-import static net.wickedshell.ai.chatbot.core.Constants.MISTRAL_MODEL;
+import static net.wickedshell.ai.chatbot.core.ConnectionProperties.MISTRAL_MODEL;
 
 public class BasicConsoleChatBot extends ConsoleChatBot {
     private static final int MESSAGE_WINDOW = 20;

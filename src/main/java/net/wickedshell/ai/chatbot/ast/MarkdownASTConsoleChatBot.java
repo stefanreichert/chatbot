@@ -5,7 +5,6 @@ import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.EmbeddingMatch;
 import net.wickedshell.ai.chatbot.ast.qdrant.QdrantEmbeddingRepository;
-import net.wickedshell.ai.chatbot.ast.qdrant.java.QdrantStorageJavaInitializer;
 import net.wickedshell.ai.chatbot.ast.qdrant.markdown.QdrantStorageMarkdownInitializer;
 import net.wickedshell.ai.chatbot.core.ConsoleChatBot;
 import net.wickedshell.ai.chatbot.core.StreamingChatBot;
@@ -13,15 +12,15 @@ import net.wickedshell.ai.chatbot.core.StreamingChatBot;
 import java.util.List;
 
 import static java.lang.System.out;
-import static net.wickedshell.ai.chatbot.core.Constants.*;
+import static net.wickedshell.ai.chatbot.core.LLMProfile.MISTRAL;
 
 public class MarkdownASTConsoleChatBot extends ConsoleChatBot {
 
     private final QdrantEmbeddingRepository repository;
 
     protected MarkdownASTConsoleChatBot() {
-        super(MISTRAL_MODEL);
-        this.repository = new QdrantEmbeddingRepository(getModelName(), EMBEDDINGS_COLLECTION_NAME_MARKDOWN, VECTOR_SIZE_MISTRAL);
+        super(MISTRAL);
+        this.repository = new QdrantEmbeddingRepository(this.llmProfile);
     }
 
     public static void main(String[] args) {

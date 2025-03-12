@@ -3,6 +3,7 @@ package net.wickedshell.ai.chatbot.ast.qdrant.java;
 import net.wickedshell.ai.chatbot.ast.parser.java.ASTExtractor;
 import net.wickedshell.ai.chatbot.ast.parser.java.ASTExtractor.SourceFileAbstraction;
 import net.wickedshell.ai.chatbot.ast.qdrant.QdrantEmbeddingRepository;
+import net.wickedshell.ai.chatbot.core.LLMProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,8 +11,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import static net.wickedshell.ai.chatbot.core.Constants.*;
 
 public class QdrantStorageJavaInitializer {
 
@@ -23,7 +22,7 @@ public class QdrantStorageJavaInitializer {
 
     public QdrantStorageJavaInitializer(Path sourceFolder) {
         this.sourceFolder = sourceFolder;
-        repository = new QdrantEmbeddingRepository(CODELLAMA_MODEL, EMBEDDINGS_COLLECTION_NAME_JAVA, VECTOR_SIZE_OLLAMA);
+        repository = new QdrantEmbeddingRepository(LLMProfile.CODELLAMA);
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
