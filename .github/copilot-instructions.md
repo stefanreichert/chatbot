@@ -1,0 +1,17 @@
+- Use Java 21+ features where appropriate.
+- Follow standard Java naming conventions (camelCase for variables/methods, PascalCase for classes).
+- Use SLF4J for logging.
+- Prefer immutability and thread safety in core classes.
+- All new code should include Javadoc comments for public methods and classes.
+- Use Maven for dependency management and build tasks.
+- When working with embeddings or Qdrant, ensure all operations are robust to network or data errors.
+- For Markdown parsing, use the Flexmark library.
+- Write unit tests for all new features. 
+- Organize code by feature
+  - Initializer for Qdrant collections are loacted in the package `net.wickedshell.ai.chatbot.ast.qdrant`
+  - Parsers for languages or formats are located in the package `net.wickedshell.ai.chatbot.ast.parser`
+  - handling of embeddings is located  in the package `net.wickedshell.ai.chatbot.ast.embedding`
+  - profiles for different LLMs are encapsulated in the enumeration `net.wickedshell.ai.chatbot.core.LLMProfile
+- This codebase is intended to provide an setup for local execution
+- The docker-compose file is located in the root directory and is used to start the Qdrant service and the Ollama LLM service
+- chatbot application and qdrant initializer must use the identical LLMProfile
