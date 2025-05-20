@@ -3,7 +3,7 @@ package net.wickedshell.ai.chatbot.core;
 public enum LLMProfile {
 
     MISTRAL("mistral", "markdown", 4096),
-    CODELLAMA("codellama:13b", "java", 5120);
+    CODELLAMA("codellama", "java", 4096);
 
     private final String modelName;
     private final String embeddingCollectionName;

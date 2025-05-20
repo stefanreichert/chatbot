@@ -23,7 +23,7 @@ public class QdrantStorageMarkdownInitializer {
 
     public static final String KEY_PATH = "path";
     public static final String KEY_HEADING = "heading";
-    public static final String KEY_CONTENT = "content";
+    public static final String KEY_CHAPTER_CONTENT = "chapter_content";
     private static final Logger LOG = LoggerFactory.getLogger(QdrantStorageMarkdownInitializer.class);
     private final QdrantEmbeddingRepository repository;
     private final Path sourceFolder;
@@ -47,7 +47,7 @@ public class QdrantStorageMarkdownInitializer {
         try {
             Parser parser = Parser.builder().build();
             Document markdownDocument = parser.parse(Files.readString(markdownFile));
-            getHeadingsRecursively(markdownDocument).forEach(heading -> addSection(heading, markdownFile));
+            getHeadingsRecursively(markdownDocument).forEach(heading -> addChapter(heading, markdownFile));
             LOG.error("Done");
         } catch (IOException exception) {
             LOG.error("Error reading file: {}", markdownFile);
@@ -55,15 +55,20 @@ public class QdrantStorageMarkdownInitializer {
         }
     }
 
-    private void addSection(Heading heading, Path markdownFile) {
-        LOG.info("Add Section: {}...", heading.getChars());
-        List<Paragraph> paragraphs = getParagraphs(heading);
-        String content = toString(heading, paragraphs);
+    private void addChapter(Heading heading, Path markdownFile) {
+        LOG.info("Add Chapter: {}...", heading.getChars());
+        List<Paragraph> paragraphsForHeading = getParagraphsForHeading(heading);
+        String chapterContent = toString(heading, paragraphsForHeading);
+        paragraphsForHeading.forEach(paragraph -> addParagraph(paragraph, heading, markdownFile, chapterContent));
+        LOG.info("Added {} Paragraphs for Chapter: {}...", paragraphsForHeading.size(), heading.getChars());
+    }
+
+    private void addParagraph(Paragraph paragraph, Heading heading, Path markdownFile, String chapterContent) {
         Map<String, String> metadata = Map.of(
                 KEY_PATH, markdownFile.toString(),
                 KEY_HEADING, heading.getChars().toString(),
-                KEY_CONTENT, content);
-        repository.add(content, metadata);
+                KEY_CHAPTER_CONTENT, chapterContent);
+        repository.add(paragraph.getChars().toString(), metadata);
     }
 
     private String toString(Heading heading, List<Paragraph> paragraphs) {
@@ -86,7 +91,7 @@ public class QdrantStorageMarkdownInitializer {
         return headingNodes;
     }
 
-    private List<Paragraph> getParagraphs(Heading heading) {
+    private List<Paragraph> getParagraphsForHeading(Heading heading) {
         List<Paragraph> paragraphNodes = new ArrayList<>();
         if (heading.getNext() != null && !(heading.getNext() instanceof Heading)) {
             paragraphNodes.addAll(getParagraphsRecursively(heading.getNext()));
